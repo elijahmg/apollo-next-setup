@@ -1,12 +1,13 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import getInitialServerSideState from "../apollo/getInitialSSRState";
 import { useQuery } from "@apollo/client";
 import { GET_ROCKETS } from "../apollo/query";
 
-function Home() {
-  const { data, loading } = useQuery(GET_ROCKETS);
+function Page() {
+  const { data, loading } = useQuery(GET_ROCKETS, {
+    fetchPolicy: "cache-first",
+  });
 
   return (
     <div className={styles.container}>
@@ -17,9 +18,6 @@ function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Link href="/page">
-          <a>Some page</a>
-        </Link>
         {loading && <div>Loading</div>}
         {!loading && data?.launchesPast.map((launch) => (
           <div key={launch.id}>
@@ -34,9 +32,7 @@ function Home() {
   )
 }
 
-export const getServerSideProps = async (
-  ctx
-) => {
+export async function getServerSideProps(ctx) {
   const initialSSRState = await getInitialServerSideState(ctx);
 
   return {
@@ -46,4 +42,4 @@ export const getServerSideProps = async (
   };
 };
 
-export default Home;
+export default Page;
