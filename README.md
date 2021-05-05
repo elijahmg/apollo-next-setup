@@ -1,4 +1,5 @@
 This is a [Next.js](https://nextjs.org/) and [Apollo Client](https://www.apollographql.com/docs/react/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+It uses open API from [SpaceX](https://api.spacex.land/graphql/)
 
 ## Getting Started
 
