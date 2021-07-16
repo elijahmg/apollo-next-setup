@@ -1,9 +1,22 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import type { AppContext } from 'next/app'
+import { useQuery } from '@apollo/client';
+
 import styles from '../styles/Home.module.css'
-import getInitialServerSideState from "../apollo/getInitialSSRState";
-import { useQuery } from "@apollo/client";
-import { GET_ROCKETS } from "../apollo/query";
+import getInitialServerSideState from '../apollo/getInitialSSRState';
+import { GET_ROCKETS } from '../apollo/query';
+
+interface Launch {
+  id: string;
+  launch_date_local: string;
+  rocket: {
+    rocket_name: string;
+  },
+  links: {
+    video_link: string;
+  }
+}
 
 function Home() {
   const { data, loading } = useQuery(GET_ROCKETS);
@@ -21,10 +34,18 @@ function Home() {
           <a>Some page</a>
         </Link>
         {loading && <div>Loading</div>}
-        {!loading && data?.launchesPast.map((launch) => (
+        {!loading && data?.launchesPast.map((launch: Launch) => (
           <div key={launch.id}>
             <span>
               {launch.rocket.rocket_name}&nbsp;
+            </span>
+            <Link href={launch.links.video_link}>
+              <a>
+                {launch.links.video_link}
+              </a>
+            </Link>
+            <span>
+              {launch.launch_date_local}
             </span>
           </div>
         ))}
@@ -35,7 +56,7 @@ function Home() {
 }
 
 export const getServerSideProps = async (
-  ctx
+  ctx: AppContext
 ) => {
   const initialSSRState = await getInitialServerSideState(ctx);
 

@@ -1,7 +1,7 @@
 const { initializeApollo } = require("./apolloClient");
 
 
-const getInitialServerSideState = (ctx) => {
+const getInitialServerSideState = (ctx: any) => {
   const apolloClient = initializeApollo(null, ctx);
 
   return {
